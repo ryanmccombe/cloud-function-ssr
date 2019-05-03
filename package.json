@@ -7,6 +7,7 @@
   },
   "scripts": {
     "dev": "next \"src/app/\"",
+    "dev:server": "node src/functions/express.js",
     "preserve": "npm run build-public && npm run build-funcs && npm run build-app && npm run copy-deps && npm run install-deps",
     "serve": "cross-env NODE_ENV=production firebase serve",
     "predeploy": "npm run build-public && npm run build-funcs && npm run build-app && npm run copy-deps",

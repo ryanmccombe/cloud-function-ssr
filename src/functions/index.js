@@ -1,7 +1,8 @@
 const functions = require("firebase-functions");
-const express = require("express");
 const path = require('path');
 const next = require('next');
+
+const app = require('./express');
 
 const dev = process.env.NODE_ENV !== 'production';
 const nextApp = next({
@@ -11,26 +12,16 @@ const nextApp = next({
 
 const handle = nextApp.getRequestHandler();
 
-const app = express();
-app.get("/hello", (request, response) => {
-	response.send(
-		"Hello from Express on Firebase!"
-	);
-});
-
-app.get("*", (request, response) => {
-	return nextApp.prepare().then(() => handle(request, response))
-});
-
-const api = functions.https.onRequest((request, response) => {
+const nextServer = functions.https.onRequest((request, response) => {
 	if (!request.path) {
 		request.url = `/${request.url}`;
 	}
-	return app(request, response);
+  return nextApp.prepare().then(() => handle(request, response))
 });
 
 module.exports = {
-	next: api
+	next: nextServer,
+	api: functions.https.onRequest(app)
 };
 
 
