@@ -2,7 +2,7 @@ const functions = require("firebase-functions");
 const path = require('path');
 const next = require('next');
 
-const app = require('./express');
+const api = require('./express');
 
 const dev = process.env.NODE_ENV !== 'production';
 const nextApp = next({
@@ -21,7 +21,7 @@ const nextServer = functions.https.onRequest((request, response) => {
 
 module.exports = {
 	next: nextServer,
-	api: functions.https.onRequest(app)
+	api: functions.https.onRequest(api)
 };
 
 
